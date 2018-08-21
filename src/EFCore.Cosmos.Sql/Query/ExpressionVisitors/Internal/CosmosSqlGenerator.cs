@@ -46,17 +46,13 @@ namespace Microsoft.EntityFrameworkCore.Cosmos.Sql.Query.ExpressionVisitors.Inte
             { ExpressionType.LessThanOrEqual, " <= " },
 
             // Unary
-            { ExpressionType.UnaryPlus, "+" }, // TODO: Regression test pending
+            { ExpressionType.UnaryPlus, "+" },
             { ExpressionType.Negate, "-" },
             { ExpressionType.Not, "~" },
 
             // Others
             { ExpressionType.Coalesce, " ?? " },
         };
-
-        public CosmosSqlGenerator()
-        {
-        }
 
         public SqlQuerySpec GenerateSqlQuerySpec(
             SelectExpression selectExpression,
