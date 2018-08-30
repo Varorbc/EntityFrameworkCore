@@ -489,7 +489,8 @@ WHERE " + filter;
                         var table = new DatabaseTable
                         {
                             Schema = schema,
-                            Name = name
+                            Name = name,
+                            //Summary = summary
                         };
 
                         if (supportsMemoryOptimizedTable)
