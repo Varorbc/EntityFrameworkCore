@@ -22,6 +22,11 @@ namespace Microsoft.EntityFrameworkCore.Metadata
         string Name { get; }
 
         /// <summary>
+        ///     Gets the summary of this type.
+        /// </summary>
+        string Summary { get; }
+
+        /// <summary>
         ///     <para>
         ///         Gets the CLR class that is used to represent instances of this type. Returns null if the type does not have a
         ///         corresponding CLR class (known as a shadow type).

@@ -76,7 +76,23 @@ namespace Microsoft.EntityFrameworkCore.Metadata
                 : ((string)Annotations.Metadata[RelationalAnnotationNames.TableName]
                    ?? GetDefaultTableName());
 
-            [param: CanBeNull] set => SetTableName(value);
+            [param: CanBeNull]
+            set => SetTableName(value);
+        }
+
+        /// <summary>
+        ///     The summary of the table to which the entity type is mapped.
+        /// </summary>
+        public string TableSummary
+        {
+            // TODO: Varorbc
+            get => EntityType.BaseType != null
+                ? GetAnnotations(EntityType.RootType()).TableName
+                : ((string)Annotations.Metadata[RelationalAnnotationNames.TableName]
+                   ?? GetDefaultTableName());
+
+            [param: CanBeNull]
+            set => SetTableName(value);
         }
 
         private string GetDefaultTableName()
@@ -107,7 +123,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata
                 : ((string)Annotations.Metadata[RelationalAnnotationNames.Schema]
                    ?? GetDefaultSchema());
 
-            [param: CanBeNull] set => SetSchema(value);
+            [param: CanBeNull]
+            set => SetSchema(value);
         }
 
         private string GetDefaultSchema()
@@ -141,7 +158,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata
 
                 return propertyName == null ? null : EntityType.FindProperty(propertyName);
             }
-            [param: CanBeNull] set => SetDiscriminatorProperty(value);
+            [param: CanBeNull]
+            set => SetDiscriminatorProperty(value);
         }
 
         /// <summary>
@@ -218,7 +236,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata
         public virtual object DiscriminatorValue
         {
             get => Annotations.Metadata[RelationalAnnotationNames.DiscriminatorValue];
-            [param: CanBeNull] set => SetDiscriminatorValue(value);
+            [param: CanBeNull]
+            set => SetDiscriminatorValue(value);
         }
 
         /// <summary>

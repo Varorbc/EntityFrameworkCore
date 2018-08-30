@@ -98,6 +98,9 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                 GenerateEntityTypeDataAnnotations(entityType);
             }
 
+            _sb.AppendLine("/// <summary>");
+            _sb.AppendLine($"/// {entityType.Summary}");
+            _sb.AppendLine("/// </summary>");
             _sb.AppendLine($"public partial class {entityType.Name}");
 
             _sb.AppendLine("{");
@@ -193,6 +196,9 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
                     GeneratePropertyDataAnnotations(property);
                 }
 
+                _sb.AppendLine("/// <summary>");
+                _sb.AppendLine($"/// {property.Summary}");
+                _sb.AppendLine("/// </summary>");
                 _sb.AppendLine($"public {_code.Reference(property.ClrType)} {property.Name} {{ get; set; }}");
             }
         }

@@ -31,12 +31,14 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         protected PropertyBase(
             [NotNull] string name,
+            [CanBeNull] string summary,
             [CanBeNull] PropertyInfo propertyInfo,
             [CanBeNull] FieldInfo fieldInfo)
         {
             Check.NotEmpty(name, nameof(name));
 
             Name = name;
+            Summary = summary;
             PropertyInfo = propertyInfo;
             _fieldInfo = fieldInfo;
         }
@@ -51,6 +53,12 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
+        public virtual string Summary { [DebuggerStepThrough] get; }
+
+        /// <summary>
+        ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
+        ///     directly from your code. This API may change or be removed in future releases.
+        /// </summary>
         public abstract TypeBase DeclaringType { get; }
 
         /// <summary>
@@ -59,7 +67,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public virtual bool IsShadowProperty
         {
-            [DebuggerStepThrough] get => this.GetIdentifyingMemberInfo() == null;
+            [DebuggerStepThrough]
+            get => this.GetIdentifyingMemberInfo() == null;
         }
 
         /// <summary>
@@ -74,7 +83,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public virtual FieldInfo FieldInfo
         {
-            [DebuggerStepThrough] get => _fieldInfo;
+            [DebuggerStepThrough]
+            get => _fieldInfo;
             [DebuggerStepThrough]
             [param: CanBeNull]
             set => SetFieldInfo(value, ConfigurationSource.Explicit);

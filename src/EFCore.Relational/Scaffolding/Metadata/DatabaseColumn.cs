@@ -25,7 +25,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Metadata
         /// <summary>
         ///     The column summary.
         /// </summary>
-        public virtual string Summary { get; [param: NotNull] set; }
+        public virtual string Summary { get; [param: CanBeNull] set; }
 
         /// <summary>
         ///     Indicates whether or not this column can contain <c>NULL</c> values.

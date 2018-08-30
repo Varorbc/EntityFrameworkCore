@@ -30,8 +30,9 @@ namespace Microsoft.EntityFrameworkCore.Metadata
         ///     </para>
         /// </summary>
         /// <param name="name"> The name of the entity to be added. </param>
+        /// <param name="summary"> The summary of the entity to be added. </param>
         /// <returns> The new entity type. </returns>
-        IMutableEntityType AddEntityType([NotNull] string name);
+        IMutableEntityType AddEntityType([NotNull] string name, [CanBeNull]string summary);
 
         /// <summary>
         ///     Adds an entity type to the model.
@@ -44,11 +45,13 @@ namespace Microsoft.EntityFrameworkCore.Metadata
         ///     Adds an entity type with a defining navigation to the model.
         /// </summary>
         /// <param name="name"> The name of the entity to be added. </param>
+        /// <param name="summary"> The summary of the entity to be added. </param>
         /// <param name="definingNavigationName"> The defining navigation. </param>
         /// <param name="definingEntityType"> The defining entity type. </param>
         /// <returns> The new entity type. </returns>
         IMutableEntityType AddEntityType(
             [NotNull] string name,
+            [CanBeNull]string summary,
             [NotNull] string definingNavigationName,
             [NotNull] IMutableEntityType definingEntityType);
 

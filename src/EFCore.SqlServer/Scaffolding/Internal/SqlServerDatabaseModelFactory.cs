@@ -441,7 +441,8 @@ WHERE " + schemaFilter("OBJECT_SCHEMA_NAME([s].[object_id])");
                 var commandText = @"
 SELECT
     SCHEMA_NAME([t].[schema_id]) AS [schema],
-    [t].[name]";
+    [t].[name],
+    [ep].[value] AS [summary]";
 
                 if (supportsMemoryOptimizedTable)
                 {
@@ -451,6 +452,9 @@ SELECT
 
                 commandText += @"
 FROM [sys].[tables] AS [t]";
+
+                commandText += @"
+LEFT JOIN [sys].[extended_properties] AS [ep] ON [t].[object_id] = [ep].[major_id] AND [ep].[minor_id] = 0";
 
                 var filter = @"[t].[is_ms_shipped] = 0
 AND NOT EXISTS (SELECT *
@@ -483,6 +487,7 @@ WHERE " + filter;
                     {
                         var schema = reader.GetValueOrDefault<string>("schema");
                         var name = reader.GetValueOrDefault<string>("name");
+                        var summary = reader.GetValueOrDefault<string>("summary");
 
                         _logger.TableFound(DisplayName(schema, name));
 
@@ -490,7 +495,7 @@ WHERE " + filter;
                         {
                             Schema = schema,
                             Name = name,
-                            //Summary = summary
+                            Summary = summary
                         };
 
                         if (supportsMemoryOptimizedTable)
@@ -527,6 +532,7 @@ SELECT
     SCHEMA_NAME([t].[schema_id]) AS [table_schema],
     [t].[name] AS [table_name],
     [c].[name] AS [column_name],
+    [ep].[value] AS [summary],
     [c].[column_id] AS [ordinal],
     SCHEMA_NAME([tp].[schema_id]) AS [type_schema],
     [tp].[name] AS [type_name],
@@ -541,6 +547,7 @@ FROM [sys].[columns] AS [c]
 JOIN [sys].[tables] AS [t] ON [c].[object_id] = [t].[object_id]
 JOIN [sys].[types] AS [tp] ON [c].[user_type_id] = [tp].[user_type_id]
 LEFT JOIN [sys].[computed_columns] AS [cc] ON [c].[object_id] = [cc].[object_id] AND [c].[column_id] = [cc].[column_id]
+LEFT JOIN [sys].[extended_properties] AS [ep] ON [c].[object_id] = [ep].[major_id] AND [c].[column_id] = [ep].[minor_id]
 WHERE " + tableFilter;
 
                 if (Version.TryParse(connection.ServerVersion, out var serverVersion)
@@ -571,6 +578,7 @@ ORDER BY [table_schema], [table_name], [c].[column_id]";
                         foreach (var dataRecord in tableColumnGroup)
                         {
                             var columnName = dataRecord.GetValueOrDefault<string>("column_name");
+                            var summary = dataRecord.GetValueOrDefault<string>("summary");
                             var ordinal = dataRecord.GetValueOrDefault<int>("ordinal");
                             var dataTypeSchemaName = dataRecord.GetValueOrDefault<string>("type_schema");
                             var dataTypeName = dataRecord.GetValueOrDefault<string>("type_name");
@@ -585,6 +593,7 @@ ORDER BY [table_schema], [table_name], [c].[column_id]";
                             _logger.ColumnFound(
                                 DisplayName(tableSchema, tableName),
                                 columnName,
+                                summary,
                                 ordinal,
                                 DisplayName(dataTypeSchemaName, dataTypeName),
                                 maxLength,
@@ -617,6 +626,7 @@ ORDER BY [table_schema], [table_name], [c].[column_id]";
                             {
                                 Table = table,
                                 Name = columnName,
+                                Summary = summary,
                                 StoreType = storeType,
                                 IsNullable = nullable,
                                 DefaultValueSql = defaultValue,

@@ -19,9 +19,10 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [DebuggerStepThrough]
-        public TypeIdentity([NotNull] string name)
+        public TypeIdentity([NotNull] string name, [CanBeNull] string summary)
         {
             Name = name;
+            Summary = summary;
             Type = null;
         }
 
@@ -33,6 +34,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         public TypeIdentity([NotNull] Type type, [NotNull] Model model)
         {
             Name = model.GetDisplayName(type);
+            Summary = null;
             Type = type;
         }
 
@@ -41,6 +43,12 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Name { [DebuggerStepThrough] get; }
+
+        /// <summary>
+        ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
+        ///     directly from your code. This API may change or be removed in future releases.
+        /// </summary>
+        public string Summary { [DebuggerStepThrough] get; }
 
         /// <summary>
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used

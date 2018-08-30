@@ -90,12 +90,13 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public virtual EntityType AddEntityType(
             [NotNull] string name,
+            [CanBeNull] string summary,
             // ReSharper disable once MethodOverloadWithOptionalParameter
             ConfigurationSource configurationSource = ConfigurationSource.Explicit)
         {
             Check.NotEmpty(name, nameof(name));
 
-            var entityType = new EntityType(name, this, configurationSource);
+            var entityType = new EntityType(name, summary, this, configurationSource);
 
             return AddEntityType(entityType);
         }
@@ -212,8 +213,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public virtual EntityType GetOrAddEntityType([NotNull] string name)
-            => FindEntityType(name) ?? AddEntityType(name);
+        public virtual EntityType GetOrAddEntityType([NotNull] string name, [CanBeNull]string summary)
+            => FindEntityType(name) ?? AddEntityType(name, summary);
 
         /// <summary>
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
@@ -323,13 +324,14 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public virtual EntityType AddEntityType(
             [NotNull] string name,
+            [CanBeNull] string summary,
             [NotNull] string definingNavigationName,
             [NotNull] EntityType definingEntityType,
             ConfigurationSource configurationSource = ConfigurationSource.Explicit)
         {
             Check.NotEmpty(name, nameof(name));
 
-            var entityType = new EntityType(name, this, definingNavigationName, definingEntityType, configurationSource);
+            var entityType = new EntityType(name, summary, this, definingNavigationName, definingEntityType, configurationSource);
 
             return AddEntityType(entityType);
         }
@@ -433,8 +435,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public virtual bool EntityTypeShouldHaveDefiningNavigation([NotNull] string name)
-            => EntityTypeShouldHaveDefiningNavigation(new TypeIdentity(name));
+        public virtual bool EntityTypeShouldHaveDefiningNavigation([NotNull] string name, [CanBeNull] string summary)
+            => EntityTypeShouldHaveDefiningNavigation(new TypeIdentity(name, summary));
 
         private bool EntityTypeShouldHaveDefiningNavigation(in TypeIdentity type)
             => _entityTypesWithDefiningNavigation.ContainsKey(type.Name)
@@ -641,7 +643,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         IEnumerable<IEntityType> IModel.GetEntityTypes() => GetEntityTypes();
 
         IMutableEntityType IMutableModel.FindEntityType(string name) => FindEntityType(name);
-        IMutableEntityType IMutableModel.AddEntityType(string name) => AddEntityType(name);
+        IMutableEntityType IMutableModel.AddEntityType(string name, string summary) => AddEntityType(name, summary);
         IMutableEntityType IMutableModel.AddEntityType(Type type) => AddEntityType(type);
         IMutableEntityType IMutableModel.AddQueryType(Type type) => AddQueryType(type);
         IMutableEntityType IMutableModel.RemoveEntityType(string name) => RemoveEntityType(name);
@@ -655,9 +657,10 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
 
         IMutableEntityType IMutableModel.AddEntityType(
             string name,
+            string summary,
             string definingNavigationName,
             IMutableEntityType definingEntityType)
-            => AddEntityType(name, definingNavigationName, (EntityType)definingEntityType);
+            => AddEntityType(name, summary, definingNavigationName, (EntityType)definingEntityType);
 
         IMutableEntityType IMutableModel.AddEntityType(
             Type type,

@@ -40,13 +40,14 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public Property(
             [NotNull] string name,
+            [CanBeNull] string summary,
             [NotNull] Type clrType,
             [CanBeNull] PropertyInfo propertyInfo,
             [CanBeNull] FieldInfo fieldInfo,
             [NotNull] EntityType declaringEntityType,
             ConfigurationSource configurationSource,
             ConfigurationSource? typeConfigurationSource)
-            : base(name, propertyInfo, fieldInfo)
+            : base(name, summary, propertyInfo, fieldInfo)
         {
             Check.NotNull(clrType, nameof(clrType));
             Check.NotNull(declaringEntityType, nameof(declaringEntityType));
@@ -77,7 +78,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public override TypeBase DeclaringType
         {
-            [DebuggerStepThrough] get => DeclaringEntityType;
+            [DebuggerStepThrough]
+            get => DeclaringEntityType;
         }
 
         /// <summary>
@@ -92,7 +94,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public virtual InternalPropertyBuilder Builder
         {
-            [DebuggerStepThrough] get;
+            [DebuggerStepThrough]
+            get;
             [DebuggerStepThrough]
             [param: CanBeNull]
             set;

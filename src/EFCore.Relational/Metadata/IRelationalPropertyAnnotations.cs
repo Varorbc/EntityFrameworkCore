@@ -15,6 +15,11 @@ namespace Microsoft.EntityFrameworkCore.Metadata
         string ColumnName { get; }
 
         /// <summary>
+        ///     The summary of the column to which the property is mapped.
+        /// </summary>
+        string ColumnSummary { get; }
+
+        /// <summary>
         ///     The database type of the column to which the property is mapped.
         /// </summary>
         string ColumnType { get; }

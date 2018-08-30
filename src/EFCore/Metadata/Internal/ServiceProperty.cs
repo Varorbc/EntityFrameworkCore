@@ -26,11 +26,12 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public ServiceProperty(
             [NotNull] string name,
+            [CanBeNull] string summary,
             [CanBeNull] PropertyInfo propertyInfo,
             [CanBeNull] FieldInfo fieldInfo,
             [NotNull] EntityType declaringEntityType,
             ConfigurationSource configurationSource)
-            : base(name, propertyInfo, fieldInfo)
+            : base(name, summary, propertyInfo, fieldInfo)
         {
             Check.NotNull(declaringEntityType, nameof(declaringEntityType));
 
@@ -53,7 +54,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public override TypeBase DeclaringType
         {
-            [DebuggerStepThrough] get => DeclaringEntityType;
+            [DebuggerStepThrough]
+            get => DeclaringEntityType;
         }
 
         /// <summary>
@@ -74,7 +76,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public virtual InternalServicePropertyBuilder Builder
         {
-            [DebuggerStepThrough] get;
+            [DebuggerStepThrough]
+            get;
             [DebuggerStepThrough]
             [param: CanBeNull]
             set;
@@ -100,7 +103,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         public virtual ServiceParameterBinding ParameterBinding
         {
             get => _parameterBinding;
-            [param: NotNull] set => SetParameterBinding(value, ConfigurationSource.Explicit);
+            [param: NotNull]
+            set => SetParameterBinding(value, ConfigurationSource.Explicit);
         }
 
         /// <summary>

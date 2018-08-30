@@ -15,6 +15,11 @@ namespace Microsoft.EntityFrameworkCore.Metadata
         string TableName { get; }
 
         /// <summary>
+        ///     The summary of the table to which the entity type is mapped.
+        /// </summary>
+        string TableSummary { get; }
+
+        /// <summary>
         ///     The database schema that contains the mapped table.
         /// </summary>
         string Schema { get; }

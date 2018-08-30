@@ -25,7 +25,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Metadata
         /// <summary>
         ///     The table summary.
         /// </summary>
-        public virtual string Summary { get; [param: NotNull] set; }
+        public virtual string Summary { get; [param: CanBeNull] set; }
 
         /// <summary>
         ///     The table schema, or <c>null</c> to use the default schema.

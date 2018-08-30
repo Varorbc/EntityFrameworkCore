@@ -19,6 +19,11 @@ namespace Microsoft.EntityFrameworkCore.Metadata
         string Name { get; }
 
         /// <summary>
+        ///     Gets the summary of the property.
+        /// </summary>
+        string Summary { get; }
+
+        /// <summary>
         ///     Gets the type that this property belongs to.
         /// </summary>
         ITypeBase DeclaringType { get; }

@@ -39,8 +39,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public virtual InternalEntityTypeBuilder Entity(
-            [NotNull] string name, ConfigurationSource configurationSource, bool allowOwned = false, bool throwOnQuery = false)
-            => Entity(new TypeIdentity(name), configurationSource, allowOwned, throwOnQuery);
+            [NotNull] string name, [CanBeNull] string summary, ConfigurationSource configurationSource, bool allowOwned = false, bool throwOnQuery = false)
+            => Entity(new TypeIdentity(name, summary), configurationSource, allowOwned, throwOnQuery);
 
         /// <summary>
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
@@ -114,7 +114,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
 
                 Metadata.Unignore(type.Name);
                 entityType = clrType == null
-                    ? Metadata.AddEntityType(type.Name, configurationSource)
+                    ? Metadata.AddEntityType(type.Name, type.Summary, configurationSource)
                     : Metadata.AddEntityType(clrType, configurationSource);
             }
 
@@ -168,10 +168,11 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public virtual InternalEntityTypeBuilder Entity(
             [NotNull] string name,
+            [CanBeNull] string summary,
             [NotNull] string definingNavigationName,
             [NotNull] EntityType definingEntityType,
             ConfigurationSource configurationSource)
-            => Entity(new TypeIdentity(name), definingNavigationName, definingEntityType, configurationSource);
+            => Entity(new TypeIdentity(name, summary), definingNavigationName, definingEntityType, configurationSource);
 
         /// <summary>
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
@@ -226,7 +227,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
                 {
                     Metadata.Unignore(type.Name);
 
-                    weakEntityType = Metadata.AddEntityType(type.Name, definingNavigationName, definingEntityType, configurationSource);
+                    weakEntityType = Metadata.AddEntityType(type.Name, type.Summary, definingNavigationName, definingEntityType, configurationSource);
                 }
                 else
                 {
@@ -254,8 +255,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public virtual bool Owned(
-            [NotNull] string name, ConfigurationSource configurationSource)
-            => Owned(new TypeIdentity(name), configurationSource);
+            [NotNull] string name, [CanBeNull] string summary, ConfigurationSource configurationSource)
+            => Owned(new TypeIdentity(name, summary), configurationSource);
 
         /// <summary>
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
@@ -343,8 +344,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public virtual bool IsIgnored([NotNull] string name, ConfigurationSource configurationSource)
-            => IsIgnored(new TypeIdentity(name), configurationSource);
+        public virtual bool IsIgnored([NotNull] string name, [CanBeNull] string summary, ConfigurationSource configurationSource)
+            => IsIgnored(new TypeIdentity(name, summary), configurationSource);
 
         private bool IsIgnored(in TypeIdentity type, ConfigurationSource configurationSource)
         {
@@ -369,8 +370,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public virtual bool Ignore([NotNull] string name, ConfigurationSource configurationSource)
-            => Ignore(new TypeIdentity(name), configurationSource);
+        public virtual bool Ignore([NotNull] string name, [CanBeNull] string summary, ConfigurationSource configurationSource)
+            => Ignore(new TypeIdentity(name, summary), configurationSource);
 
         private bool Ignore(in TypeIdentity type, ConfigurationSource configurationSource)
         {

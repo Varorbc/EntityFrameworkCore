@@ -27,13 +27,14 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        protected TypeBase([NotNull] string name, [NotNull] Model model, ConfigurationSource configurationSource)
+        protected TypeBase([NotNull] string name, [CanBeNull] string summary, [NotNull] Model model, ConfigurationSource configurationSource)
             : this(model, configurationSource)
         {
             Check.NotEmpty(name, nameof(name));
             Check.NotNull(model, nameof(model));
 
             Name = name;
+            Summary = summary;
         }
 
         /// <summary>
@@ -72,6 +73,12 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public virtual string Name { [DebuggerStepThrough] get; }
+
+        /// <summary>
+        ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
+        ///     directly from your code. This API may change or be removed in future releases.
+        /// </summary>
+        public virtual string Summary { [DebuggerStepThrough] get; }
 
         /// <summary>
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
@@ -217,17 +224,20 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
 
         IModel ITypeBase.Model
         {
-            [DebuggerStepThrough] get => Model;
+            [DebuggerStepThrough]
+            get => Model;
         }
 
         IMutableModel IMutableTypeBase.Model
         {
-            [DebuggerStepThrough] get => Model;
+            [DebuggerStepThrough]
+            get => Model;
         }
 
         Type ITypeBase.ClrType
         {
-            [DebuggerStepThrough] get => ClrType;
+            [DebuggerStepThrough]
+            get => ClrType;
         }
     }
 }

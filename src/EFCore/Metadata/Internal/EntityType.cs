@@ -65,8 +65,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public EntityType([NotNull] string name, [NotNull] Model model, ConfigurationSource configurationSource)
-            : base(name, model, configurationSource)
+        public EntityType([NotNull] string name, [CanBeNull] string summary, [NotNull] Model model, ConfigurationSource configurationSource)
+            : base(name, summary, model, configurationSource)
         {
             _properties = new SortedDictionary<string, Property>(new PropertyComparer(this));
             Builder = new InternalEntityTypeBuilder(this, model.Builder);
@@ -94,11 +94,12 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public EntityType(
             [NotNull] string name,
+            [CanBeNull] string summary,
             [NotNull] Model model,
             [NotNull] string definingNavigationName,
             [NotNull] EntityType definingEntityType,
             ConfigurationSource configurationSource)
-            : this(name, model, configurationSource)
+            : this(name, summary, model, configurationSource)
         {
             DefiningNavigationName = definingNavigationName;
             DefiningEntityType = definingEntityType;
@@ -126,7 +127,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public virtual InternalEntityTypeBuilder Builder
         {
-            [DebuggerStepThrough] get;
+            [DebuggerStepThrough]
+            get;
             [DebuggerStepThrough]
             [param: CanBeNull]
             set;
@@ -1244,6 +1246,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         private Navigation AddNavigation(PropertyIdentity propertyIdentity, ForeignKey foreignKey, bool pointsToPrincipal)
         {
             var name = propertyIdentity.Name;
+            var summary = propertyIdentity.Summary;
             var duplicateNavigation = FindNavigationsInHierarchy(name).FirstOrDefault();
             if (duplicateNavigation != null)
             {
@@ -1291,7 +1294,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
                     shouldThrow: true);
             }
 
-            var navigation = new Navigation(name, propertyIdentity.Property as PropertyInfo, propertyIdentity.Property as FieldInfo, foreignKey);
+            var navigation = new Navigation(name, summary, propertyIdentity.Property as PropertyInfo, propertyIdentity.Property as FieldInfo, foreignKey);
 
             _navigations.Add(name, navigation);
 
@@ -1590,6 +1593,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         /// </summary>
         public virtual Property AddProperty(
             [NotNull] string name,
+            [CanBeNull] string summary,
             [CanBeNull] Type propertyType = null,
             // ReSharper disable once MethodOverloadWithOptionalParameter
             ConfigurationSource configurationSource = ConfigurationSource.Explicit,
@@ -1599,6 +1603,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
 
             return AddProperty(
                 name,
+                summary,
                 propertyType,
                 ClrType?.GetMembersInHierarchy(name).FirstOrDefault(),
                 configurationSource,
@@ -1628,11 +1633,12 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
                         memberInfo.Name, this.DisplayName(), memberInfo.DeclaringType?.ShortDisplayName()));
             }
 
-            return AddProperty(memberInfo.Name, memberInfo.GetMemberType(), memberInfo, configurationSource, configurationSource);
+            return AddProperty(memberInfo.Name, null, memberInfo.GetMemberType(), memberInfo, configurationSource, configurationSource);
         }
 
         private Property AddProperty(
             string name,
+            string summary,
             Type propertyType,
             MemberInfo memberInfo,
             ConfigurationSource configurationSource,
@@ -1671,7 +1677,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
             }
 
             var property = new Property(
-                name, propertyType, memberInfo as PropertyInfo, memberInfo as FieldInfo, this,
+                name, summary, propertyType, memberInfo as PropertyInfo, memberInfo as FieldInfo, this,
                 configurationSource, typeConfigurationSource);
 
             _properties.Add(property.Name, property);
@@ -1691,8 +1697,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public virtual Property GetOrAddProperty([NotNull] string name, [CanBeNull] Type propertyType)
-            => FindProperty(name) ?? AddProperty(name, propertyType);
+        public virtual Property GetOrAddProperty([NotNull] string name, [NotNull] string summary, [CanBeNull] Type propertyType)
+            => FindProperty(name) ?? AddProperty(name, summary, propertyType);
 
         /// <summary>
         ///     This API supports the Entity Framework Core infrastructure and is not intended to be used
@@ -1901,6 +1907,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
 
             var serviceProperty = new ServiceProperty(
                 name,
+                null,
                 memberInfo as PropertyInfo,
                 memberInfo as FieldInfo,
                 this,

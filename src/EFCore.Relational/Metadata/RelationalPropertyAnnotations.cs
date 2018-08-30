@@ -84,7 +84,21 @@ namespace Microsoft.EntityFrameworkCore.Metadata
             get => (string)Annotations.Metadata[RelationalAnnotationNames.ColumnName]
                    ?? ConstraintNamer.GetDefaultName(Property);
 
-            [param: CanBeNull] set => SetColumnName(value);
+            [param: CanBeNull]
+            set => SetColumnName(value);
+        }
+
+        /// <summary>
+        ///     The summary of the column to which the property is mapped.
+        /// </summary>
+        public virtual string ColumnSummary
+        {
+            // TODO: Varorbc
+            get => (string)Annotations.Metadata[RelationalAnnotationNames.ColumnName]
+                   ?? ConstraintNamer.GetDefaultName(Property);
+
+            [param: CanBeNull]
+            set => SetColumnName(value);
         }
 
         /// <summary>
@@ -117,7 +131,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata
                     : Property.FindRelationalMapping()?.StoreType;
             }
 
-            [param: CanBeNull] set => SetColumnType(value);
+            [param: CanBeNull]
+            set => SetColumnType(value);
         }
 
         /// <summary>
@@ -137,7 +152,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata
         public virtual string DefaultValueSql
         {
             get => GetDefaultValueSql(true);
-            [param: CanBeNull] set => SetDefaultValueSql(value);
+            [param: CanBeNull]
+            set => SetDefaultValueSql(value);
         }
 
         /// <summary>
@@ -242,7 +258,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata
         public virtual string ComputedColumnSql
         {
             get => GetComputedColumnSql(true);
-            [param: CanBeNull] set => SetComputedColumnSql(value);
+            [param: CanBeNull]
+            set => SetComputedColumnSql(value);
         }
 
         /// <summary>
@@ -347,7 +364,8 @@ namespace Microsoft.EntityFrameworkCore.Metadata
         public virtual object DefaultValue
         {
             get => GetDefaultValue(true);
-            [param: CanBeNull] set => SetDefaultValue(value);
+            [param: CanBeNull]
+            set => SetDefaultValue(value);
         }
 
         /// <summary>

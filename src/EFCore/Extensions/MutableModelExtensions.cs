@@ -45,9 +45,10 @@ namespace Microsoft.EntityFrameworkCore
         /// </summary>
         /// <param name="model"> The model to find or add the entity type to. </param>
         /// <param name="name"> The name of the entity type. </param>
+        /// <param name="summary"> The summary of the entity type. </param>
         /// <returns> The existing or newly created entity type. </returns>
-        public static IMutableEntityType GetOrAddEntityType([NotNull] this IMutableModel model, [NotNull] string name)
-            => Check.NotNull(model, nameof(model)).FindEntityType(name) ?? model.AddEntityType(name);
+        public static IMutableEntityType GetOrAddEntityType([NotNull] this IMutableModel model, [NotNull] string name, [CanBeNull] string summary)
+            => Check.NotNull(model, nameof(model)).FindEntityType(name) ?? model.AddEntityType(name, summary);
 
         /// <summary>
         ///     Gets the entity type with the given CLR class or adds a new entity type if none is found.

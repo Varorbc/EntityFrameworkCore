@@ -914,6 +914,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
                         var newEntityType = declaringType.ClrType == null
                             ? ModelBuilder.Entity(
                                 declaringType.Name,
+                                declaringType.Summary,
                                 Metadata.PrincipalToDependent.Name,
                                 Metadata.PrincipalEntityType,
                                 declaringType.GetConfigurationSource()).Metadata
@@ -964,6 +965,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
             {
                 newEntityType = ModelBuilder.Entity(
                     Metadata.DeclaringEntityType.Name,
+                    Metadata.DeclaringEntityType.Summary,
                     Metadata.PrincipalToDependent.Name,
                     Metadata.PrincipalEntityType,
                     Metadata.DeclaringEntityType.GetConfigurationSource()).Metadata;
@@ -2747,6 +2749,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
                                             dependentEntityType = Metadata.DeclaringEntityType.ClrType == null
                                                 ? model.AddEntityType(
                                                     Metadata.DeclaringEntityType.Name,
+                                                    Metadata.DeclaringEntityType.Summary,
                                                     Metadata.PrincipalToDependent.Name,
                                                     principalEntityType,
                                                     configurationSource)
@@ -2772,7 +2775,7 @@ namespace Microsoft.EntityFrameworkCore.Metadata.Internal
                             else
                             {
                                 dependentEntityType = Metadata.DeclaringEntityType.ClrType == null
-                                    ? model.AddEntityType(Metadata.DeclaringEntityType.Name, configurationSource)
+                                    ? model.AddEntityType(Metadata.DeclaringEntityType.Name, Metadata.DeclaringEntityType.Summary, configurationSource)
                                     : model.AddEntityType(Metadata.DeclaringEntityType.ClrType, configurationSource);
                             }
                         }
